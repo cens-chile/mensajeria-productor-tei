@@ -112,3 +112,4 @@ TODO.md
 images/*
 # exception to the rule
 !/**/.gitkeep
+postgres-data/

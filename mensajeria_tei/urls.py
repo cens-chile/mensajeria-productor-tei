@@ -15,7 +15,9 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path, include
+from django.views.generic import RedirectView
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenVerifyView
 
 from users import views as users_views
 from drf_spectacular.views import SpectacularAPIView, SpectacularRedocView, SpectacularSwaggerView
@@ -25,6 +27,7 @@ from users.views import MyTokenObtainPairView, MyTokenRefreshView
 router = routers.DefaultRouter()
 router.register(r'users', users_views.UserViewSet)
 router.register(r'groups', users_views.GroupViewSet)
+
 
 urlpatterns = [
     path('', include(router.urls)),

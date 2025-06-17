@@ -1,19 +1,20 @@
 from django.conf import settings
 from django.contrib.auth.models import User, Group
+from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, permissions, status, serializers
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
-from rest_framework.settings import api_settings
 from rest_framework_simplejwt.authentication import AUTH_HEADER_TYPES
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+from rest_framework_simplejwt.settings import api_settings
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.views import TokenViewBase
 
-from mensajeria_tei.jwt_cookie_authentication import get_from_cookie
-from users.serializers import UserSerializer, GroupSerializer
+from users.serializers import UserSerializer, GroupSerializer, CheckSerializer, LogoutSerializer, \
+    LogoutRefreshSerializer
 
 
 # Create your views here.
@@ -61,8 +62,10 @@ class MyTokenViewBase(TokenViewBase):
         data = {}
         is_refresh = request.path.endswith('/refresh/')
         if is_refresh:
-            cookie = get_from_cookie(request.META.get('HTTP_COOKIE'))
-            data['refresh'] = cookie['refresh']
+            token_data = request.data
+            if 'refresh' not in token_data:
+                raise InvalidToken("refresh token not present")
+            data['refresh'] = token_data['refresh']
         else:
             data = request.data
         serializer = self.get_serializer(data=data)
@@ -71,40 +74,6 @@ class MyTokenViewBase(TokenViewBase):
         except TokenError as e:
             raise InvalidToken(e.args[0])
         response = Response(serializer.validated_data, status=status.HTTP_200_OK)
-        # TODO
-        if not settings.DEBUG:
-            response.set_cookie('access',
-                                serializer.validated_data['access'],
-                                httponly=True,
-                                domain='.cens.cl',
-                                samesite=None,
-                                path='/',
-                                secure=True)
-        else:
-            response.set_cookie('access',
-                                serializer.validated_data['access'],
-                                httponly=True,
-                                domain='localhost',
-                                samesite=None,
-                                path='/',
-                                secure=False)
-        if not is_refresh:
-            if not settings.DEBUG:
-                response.set_cookie('refresh',
-                                    serializer.validated_data['refresh'],
-                                    httponly=True,
-                                    domain='.cens.cl',
-                                    samesite=None,
-                                    path='/',
-                                    secure=True)
-            else:
-                response.set_cookie('refresh',
-                                    serializer.validated_data['refresh'],
-                                    httponly=True,
-                                    domain='localhost',
-                                    samesite=None,
-                                    path='/',
-                                    secure=False)
         return response
 
 
@@ -141,11 +110,14 @@ class MyTokenObtainPairView(MyTokenViewBase):
 class MyTokenRefreshView(MyTokenViewBase):
     serializer_class = MyTokenRefreshSerializer
 
-
+@extend_schema(
+    request=None,
+    responses=CheckSerializer
+)
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))
 def check(request):
-    return Response({"status": "ok"}, status=status.HTTP_200_OK)
+    return Response({'status':'ok'}, status=status.HTTP_200_OK)
 
 
 @api_view(['GET'])
@@ -154,6 +126,10 @@ def user_data(request):
     serializer = UserSerializer(request.user)
     return Response(serializer.data, status=status.HTTP_200_OK)
 
+@extend_schema(
+    request=LogoutRefreshSerializer,
+    responses=LogoutSerializer
+)
 @api_view(['POST'])
 @permission_classes((IsAuthenticated,))
 def logout(request):
@@ -165,10 +141,13 @@ def logout(request):
     def is_token_owner(user_token, user_request):
         return user_token.username == user_request.username
 
-    cookie = get_from_cookie(request.META.get('HTTP_COOKIE'))
-    if 'refresh' not in cookie:
-        return Response(status=status.HTTP_412_PRECONDITION_FAILED)
-    token = RefreshToken(cookie['refresh'])
+    token_data = request.data
+    if 'refresh' not in token_data:
+        raise InvalidToken("refresh token not present")
+    try:
+        token = RefreshToken(token_data['refresh'])
+    except TokenError as e:
+        return Response({"details": "{}".format(str(e))}, status=status.HTTP_412_PRECONDITION_FAILED)
     if 'user_id' in token:
         user = get_user(token['user_id'])
         if not user or not is_token_owner(user, request.user):

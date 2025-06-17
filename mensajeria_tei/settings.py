@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/5.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
-
+import os
+from datetime import timedelta
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,12 +21,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-9vv@zb=zm9jp+wb6e)l1^-ioo_nnnb3&ir=*w$t62y9)kv%^tp'
+SECRET_KEY = os.environ.get("SECRET_KEY", '&v-!4b58lc*!r!d$#dtr%10#f&#fe7g+g09ymh1u0^6x#+hjc^')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if os.environ.get('DEBUG', default='0').lower() in ['true', '1']:
+    DEBUG = True
+else:
+    DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['0.0.0.0']
 
 
 INSTALLED_APPS = [
@@ -85,17 +89,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'mensajeria_tei.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
@@ -115,19 +108,20 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 SPECTACULAR_SETTINGS = {
-    'TITLE': 'Your Project API',
-    'DESCRIPTION': 'Your project description',
+    'TITLE': 'Componente de Mensajería',
+    'DESCRIPTION': 'Componente de mensajería que permite el envío de mensajes a servicios Minsal',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+    "PARSER_WHITELIST": ["rest_framework.parsers.JSONParser"],
     # OTHER SETTINGS
 }
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-CL'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Santiago'
 
 USE_I18N = True
 
@@ -144,3 +138,42 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=3),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    'ALGORITHM': 'RS256',
+    'SIGNING_KEY': """%s""" % (os.getenv('PRIVATE_KEY', 'asd'),),
+    'VERIFYING_KEY': """%s""" % (os.getenv('PUBLIC_KEY', 'asd'),),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True
+
+}
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DATABASE_NAME', 'mensajeria'),
+        'USER': os.getenv('DATABASE_USER', 'postgres'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'mensajeria'),
+        'HOST': os.getenv('DATABASE_HOST', 'localhost'),
+        'PORT': int(os.getenv('DATABASE_PORT', '5435')),
+    }
+}
+
+RABBITMQ_HOST = os.environ.get('RABBITMQ_HOST', 'localhost')
+CELERY_BROKER_URL = f'amqp://guest:guest@{RABBITMQ_HOST}//'
+CELERY_RESULT_BACKEND = 'celery_amqp_backend.AMQPBackend://'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+TEI_FHIR_SERVER=os.getenv('TEI_FHIR_SERVER', 'https://apicloudqa.minsal.cl/fhir/$$process-message')
+TEI_AUTH_SERVER=os.getenv('TEI_AUTH_SERVER', 'https://apicloudqa.minsal.cl/oauth/token')
+TOKEN_USER=os.getenv('TOKEN_USER', 'mensajeria')
+TOKEN_PASSWORD=os.getenv('TOKEN_PASSWORD', 'mensajeria')
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.PyMemcacheCache',
+        'LOCATION': '%s:%s' % (os.getenv('MEMCACHED_SERVER', 'memcached'), '11211'),
+    }
+}
