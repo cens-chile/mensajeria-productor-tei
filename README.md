@@ -1,5 +1,9 @@
 # mensajeria-productor-tei
 
+
+## Requerimientos
+
+* 1 gb de RAM
 * Requiere Python 3.12 instalado
 
 ## Instalación

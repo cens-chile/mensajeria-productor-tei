@@ -27,6 +27,7 @@ class Mensaje(models.Model):
     evento = models.CharField(max_length=11, blank=False, default='iniciar', choices=EVENTOS)
     estado = models.CharField(max_length=10, blank=False, default='en_proceso', choices=ESTADOS)
     organizacion = models.CharField(max_length=255)
+    software = models.CharField(max_length=255, default="Otro")
     fecha_envio = models.DateTimeField(auto_now_add=True)
     intento = models.IntegerField(default=1)
     fecha_recepcion = models.DateTimeField(blank=True, null=True)
