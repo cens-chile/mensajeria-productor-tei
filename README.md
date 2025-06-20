@@ -27,7 +27,7 @@ python manage.py createsuperuser --username admin --email admin@example.com
 ```bash
 cd /root/
 openssl genrsa -out $HOME/private-mensajeria.pem 2048
-openssl rsa -in $HOME/private-huemul.pem -outform PEM -pubout -out $HOME/public-mensajeria.pem
+openssl rsa -in $HOME/private-mensajeria.pem -outform PEM -pubout -out $HOME/public-mensajeria.pem
 ```
 ### Variables de entorno
 
