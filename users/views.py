@@ -1,5 +1,5 @@
-from django.conf import settings
 from django.contrib.auth.models import User, Group
+from django.shortcuts import redirect
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, permissions, status, serializers
 from rest_framework.decorators import api_view, permission_classes
@@ -119,6 +119,12 @@ class MyTokenRefreshView(MyTokenViewBase):
 def check(request):
     return Response({'status':'ok'}, status=status.HTTP_200_OK)
 
+@extend_schema(
+    exclude=True
+)
+@api_view(['GET'])
+def redirect_to_swagger(request):
+    return redirect('swagger-ui')
 
 @api_view(['GET'])
 @permission_classes((IsAuthenticated,))

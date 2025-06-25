@@ -81,9 +81,9 @@ MEMCACHED_SERVER=memcached
 docker compose up -d
 ```
 
-## Acceso
+## Acceso API
 
-* http://0.0.0.0:8002/api/schema/swagger-ui/
+* http://0.0.0.0:8002
 
 
 # Desarrollo

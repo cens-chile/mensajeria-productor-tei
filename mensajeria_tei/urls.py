@@ -30,6 +30,7 @@ router.register(r'groups', users_views.GroupViewSet)
 
 
 urlpatterns = [
+    path('', users_views.redirect_to_swagger),
     path('', include(router.urls)),
     path("api/", include("sender.urls")),
     path('api/check/', users_views.check),
