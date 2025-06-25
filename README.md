@@ -84,3 +84,20 @@ docker compose up -d
 ## Acceso
 
 * http://0.0.0.0:8002/api/schema/swagger-ui/
+
+
+# Desarrollo
+
+## Inicio
+
+* Iniciar los servicios
+
+```bash
+docker compose up -d 
+```
+
+## Recompilar cambios y reiniciar servicios
+
+```bash
+docker compose up -d --build
+```

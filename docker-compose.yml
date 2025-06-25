@@ -124,7 +124,8 @@ services:
         TOKEN_USER: ${TOKEN_USER:?err}
         TOKEN_PASSWORD: ${TOKEN_PASSWORD:?err}
         MEMCACHED_SERVER: ${MEMCACHED_SERVER:?err}
-
+      volumes:
+        - .:/code:z
   celery-beat:
     build:
       context: .
@@ -154,7 +155,8 @@ services:
       TOKEN_USER: ${TOKEN_USER:?err}
       TOKEN_PASSWORD: ${TOKEN_PASSWORD:?err}
       MEMCACHED_SERVER: ${MEMCACHED_SERVER:?err}
-
+    volumes:
+      - .:/code:z
   rabbitmq:
     image: rabbitmq:3-management-alpine
     ports:

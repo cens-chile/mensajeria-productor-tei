@@ -150,5 +150,10 @@ def process_message(request):
     #logging.info("bundle: %s", bundle)
     send_bundle.apply_async(args=(bundle, _id))
     #send_bundle(bundle, _id)
-    return Response({"details": "Mensaje Recibido", "location": "/mensaje/{}".format(_id)}, status=status.HTTP_200_OK)
+    headers = {
+        "Location": "/mensaje/{}".format(_id)
+    }
+    return Response({"details": "Mensaje Recibido", "location": "/mensaje/{}".format(_id)},
+                    status=status.HTTP_200_OK,
+                    headers=headers)
 
