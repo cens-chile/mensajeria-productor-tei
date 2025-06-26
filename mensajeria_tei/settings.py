@@ -184,7 +184,7 @@ DATABASES = {
         'PORT': int(os.getenv('DATABASE_PORT', '5435')),
     }
 }
-
+FILTERS_DEFAULT_LOOKUP_EXPR = 'icontains'
 RABBITMQ_HOST = os.environ.get('RABBITMQ_HOST', 'localhost')
 CELERY_BROKER_URL = f'amqp://guest:guest@{RABBITMQ_HOST}//'
 CELERY_RESULT_BACKEND = 'celery_amqp_backend.AMQPBackend://'
