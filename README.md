@@ -206,6 +206,25 @@ _Below is an example of how you can instruct your audience on installing and set
     RABBITMQ_HOST=rabbitmq
     MEMCACHED_SERVER=memcached
     ```
+| Variable                  | Descripción                                                                                                     | Ejemplo                                              |
+|:------------------------- |:---------------------------------------------------------------------------------------------------------------:|:-----------------------------------------------------|
+| DEBUG                     | Valor para detallar si se desplegaran mensajes del modo DEBUG(true, false)                                      | DEBUG=True                                           |
+| DATABASE_NAME             | Nombre de la base de datos(modificar en caso de externalizar la base de datos)                                  | midb                                                 |
+| DATABASE_HOST             | Host de la base de datos(modificar en caso de externalizar la base de datos)                                    | master-db                                            |
+| DATABASE_USER             | Usuario de la base de datos                                                                                     | admin                                                |
+| DATABASE_PASSWORD         | Password de la base de datos                                                                                    | admin                                                |
+| DATABASE_PORT             | Puerto de la base de datos(modificar en caso de externalizar la base de datos)                                  | 5432                                                 |
+| SECRET_KEY                | Conjunto de caracteres para firma criptográfica use [djecrety.ir](https://djecrety.ir/) para geenrar un valor   | '$*=2!0l51=t_h-+mib3k!02f3h4ww!!^6ez3iov1=8w@meu0n2' |
+| DJANGO_SUPERUSER_USERNAME | Nombre de super usuario de la API                                                                               | admin                                                |
+| DJANGO_SUPERUSER_PASSWORD | Password de super usuario de la API                                                                             | admin                                                |
+| GUNICORN_LOG_LEVEL        | Detalla la granuralidad de los errores('debug', 'info', 'warning', 'error','critical')                          | info                                                 |
+| TEI_FHIR_SERVER           | Enpoint FHIR del servidor de destino de los mensajes(ruta del $process-message)                                 | https://apicloudqa.minsal.cl/fhir/$$process-message  |
+| TEI_AUTH_SERVER           | Endpoint del servidor de autenticación para el servidor FHIR                                                    | https://apicloudqa.minsal.cl/oauth/token             |
+| TOKEN_USER                | Token De usuario asignado por MINSAL                                                                            | misuario                                             |
+| TOKEN_PASSWORD            | Password de Usuario asignado por MINSAL                                                                         | mipassword                                           |
+| RABBITMQ_HOST             | Host del servidor broker de mensajes(modificar en caso de externalizar el servidor RabbitMQ)                    | rabbitmq                                             |
+| MEMCACHED_SERVER          | Host del servidor de memcached(modificar en caso de externalizar el servidor RabbitMQ)                          | memcached                                            |
+    
 10. Puesta en marcha
     ```bash
     docker compose up -d
