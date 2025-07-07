@@ -62,13 +62,21 @@
     <li>
       <a href="#como-empezar">Como Empezar</a>
       <ul>
-        <li><a href="#prerequisitos">Prerequisitos</a></li>
-        <li><a href="#instalacion">Instalación</a></li>
+        <li><a href="#requisitos-del-sistema-operativo">Requisitos del sistema operativo</a></li>
+        <li><a href="#hardware-recomendado">Hardware recomendado</a></li>
+        <li><a href="#prerrequisitos">Prerequisitos</a></li>
+        <li><a href="#instalación">Instalación</a></li>
+        <li><a href="#desarrollo">Desarrollo</a></li>
       </ul>
     </li>
-    <li><a href="#uso">Uso</a></li>
+    <li>
+      <a href="#uso">Uso</a>
+      <ul>
+        <li><a href="#funcionalidades">Funcionalidades</a></li>
+      </ul>
+    </li>
     <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#Contribuir">Contribuir</a></li>
+    <li><a href="#contribuir">Contribuir</a></li>
     <li><a href="#licencia">Licencia</a></li>
     <li><a href="#contacto">Contacto</a></li>
     <li><a href="#agradecimientos">Agradecimientos</a></li>
@@ -99,7 +107,7 @@ El componente de Mensajería en particular permite ejecutar el proceso de envío
 consulta de estado de mensajes, los cuales pueden ser integrados con algun visor o consumidos directo desde algun servicio.
 Cuenta con un proceso simple de gestión de errores y reintento de mensajes.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">volver al inicio</a>)</p>
 
 
 
@@ -114,7 +122,7 @@ Cuenta con un proceso simple de gestión de errores y reintento de mensajes.
 * [![Docker][Docker.com]][Docker-url]
 
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">volver al inicio</a>)</p>
 
 
 
@@ -203,8 +211,6 @@ _Below is an example of how you can instruct your audience on installing and set
     docker compose up -d
     ```  
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 ### Desarrollo
 
 * Iniciar los servicios
@@ -219,6 +225,7 @@ docker compose up -d
 docker compose up -d --build
 ```
 
+<p align="right">(<a href="#readme-top">volver al inicio</a>)</p>
 
 <!-- USAGE EXAMPLES -->
 ## Uso
@@ -238,7 +245,7 @@ docker compose up -d --build
 
 Para ejemplos de los Bundle de eventos consultar la [Documentación](https://interoperabilidad.minsal.cl/fhir/ig/tei/0.2.1/index.html)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">volver al inicio</a>)</p>
 
 
 
@@ -254,23 +261,23 @@ Para ejemplos de los Bundle de eventos consultar la [Documentación](https://int
 
 Ver la sección de [open issues](https://github.com/cens-chile/mensajeria-productor-tei/issues) para una lista complete de las nuevas funcionalidades (y errores conocidos).
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">volver al inicio</a>)</p>
 
 
 
 <!-- Contribuir -->
 ## Contribuir
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Toda contribución que hagas será agradecida
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
+Si tienes alguna sugenrencia para hacer mejor este proyecto, por favor crea tu fork y crea un pull request. También puedes abrir un issue con el tag "mejora"
+No olvides dar una estrella al proyecto! Gracias!
 
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. Crea un fork de este proyecto
+2. Crea un branch para tu funcionalidad (`git checkout -b feature/AmazingFeature`)
+3. Haz el Commit con tus cambios(`git commit -m 'Add: mi funcionalidad'`)
+4. Sube tus cambios al repositorio (`git push origin feature/AmazingFeature`)
+5. Abre un Pull Request
 
 ### Top contributors:
 
@@ -278,7 +285,7 @@ Don't forget to give the project a star! Thanks again!
   <img src="https://contrib.rocks/image?repo=cens-chile/mensajeria-productor-tei" />
 </a>
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">volver al inicio</a>)</p>
 
 
 
@@ -287,9 +294,9 @@ Don't forget to give the project a star! Thanks again!
 
 Apache 2.0
 
-See the included `LICENSE.txt` file for details.
+Ver el archivo incluido `LICENSE` para detalles.
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">volver al inicio</a>)</p>
 
 
 
@@ -300,7 +307,7 @@ Interoperabilidad - [@CENSChile](https://x.com/CENSChile) - interoperabilidad@ce
 
 Link al Proyecto: [https://github.com/cens-chile/mensajeria-productor-tei](https://github.com/cens-chile/mensajeria-productor-tei)
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">volver al inicio</a>)</p>
 
 
 
@@ -309,7 +316,7 @@ Link al Proyecto: [https://github.com/cens-chile/mensajeria-productor-tei](https
 
 * Equipo CENS
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+<p align="right">(<a href="#readme-top">volver al inicio</a>)</p>
 
 
 
