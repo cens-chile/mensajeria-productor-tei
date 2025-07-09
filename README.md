@@ -142,14 +142,11 @@ Inicialmente se necesita un servidor donde desplegar el componente de mensajerí
 
 ### Prerrequisitos
 
-This is an example of how to list things you need to use the software and how to install them.
 * [Instalación de Docker](https://docs.docker.com/desktop/setup/install/linux/)
 * [Instalación de GIT](https://git-scm.com/downloads/linux)
 
 
 ### Instalación
-
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
 1. Clone the repo
     ```sh
