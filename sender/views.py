@@ -19,6 +19,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from mensajeria_tei.tools import find_resource_in_bundle_by_profile, find_resource_in_bundle, ProfileList
+from users.views import IsAdminOrSender
 from .models import Mensaje
 from .tasks import send_bundle
 from .serializers import MensajeSerializer
@@ -44,7 +45,7 @@ class MensajeList(generics.ListAPIView):
                         'evento', 'estado', 'software', 'organizacion')
     ordering_fields = '__all__'
     ordering = ['fecha_envio']
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminOrSender]
 
     def get(self, request, *args, **kwargs):
         return self.list(request, *args, **kwargs)
@@ -58,7 +59,7 @@ class MensajeItem(generics.RetrieveAPIView):
     """
     queryset = Mensaje.objects.all()
     serializer_class = MensajeSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminOrSender]
 
 
 @extend_schema(
@@ -72,7 +73,7 @@ class MensajeItem(generics.RetrieveAPIView):
             media_type='application/json')]
 )
 @api_view(['POST'])
-@permission_classes((IsAuthenticated,))
+@permission_classes((IsAdminOrSender,))
 def process_message(request):
     bundle = request.data
     try:

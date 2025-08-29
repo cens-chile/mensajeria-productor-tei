@@ -246,7 +246,7 @@ docker compose up -d --build
 <!-- USAGE EXAMPLES -->
 ## Uso
 
-* Accedemos a http://0.0.0.0:8002 para ver las opciones que nos entrega la Documentación de la API en la especificación de OpenAPI
+* Accedemos a http://\<IP\>:8002 para ver las opciones que nos entrega la Documentación de la API en la especificación de OpenAPI
 
 ### Funcionalidades
 
@@ -257,7 +257,98 @@ docker compose up -d --build
 * **_/api/message/$process-message_**: Permite enviar el Bundle de un evento
 * **_/api/token/_**: Permite generar un nuevo token con las credenciales
 * **_/api/token/refresh/_**: Permite generar un nuevo token a partir del refresh token
+* **_/api/token/_**: Permite generar un nuevo token con las credenciales
+* **_/groups/_**: Permite adminstrar grupos
+* **_/users/_**: Permite adminstrar usuarios
 
+
+### Manipulación de Usuarios
+
+* Por defecto el usuario admin por defecto tiene las funcionalidades de enviar y manipular mensajes, 
+en caso de requerir otras opciones, es posible crear usuarios adicionales con otros privilegios.
+* Es necesario usar credenciales del usuario administrador.
+* Puede usar http://\<IP\>:8002/api/schema/swagger-ui
+
+```curl
+curl -X 'POST' \
+  'http://<IP>:8002/api/token/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "username": "admin",
+  "password": "admin"
+}'
+```
+
+#### Crear Grupo "sender"
+
+* Este grupo permite asociar a usuarios que se desea que pueda enviar mensajes pero sin manipulación de usuarios.
+
+  * Crear Grupo
+
+```curl
+curl -X 'POST' \
+  'http://<IP>:8002/groups/' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "name": "sender"
+}'
+```
+
+#### Crear Usuario y Asociar Grupo
+
+* Crear un usuario y asignar el grupo creado en el paso anterior usando su ID
+  * **is_active**: si el usuario está activo
+  * **is_staff**: si el usuario puede manipular usuarios grupos y mensajes
+  * **groups**: agregue el grupo("http://\<IP\>:8002/groups/\<ID\>/") si desea que el usuario pueda manipular mensajes
+  
+```curl
+curl -X 'POST' \
+  'http://<IP>:8002/users/' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "username": "test",
+  "email": "user@example.com",
+  "groups": [
+     "http://localhost:8002/groups/10/"
+  ],
+  "password": "test",
+  "is_active": true,
+  "is_staff": false
+}'
+```
+
+* Use las credenciales del usuario creado para obtener un nuevo token
+
+```curl
+curl -X 'POST' \
+  'http://<IP>:8002/api/token/' \
+  -H 'accept: application/json' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "username": "test",
+  "password": "test"
+}'
+```
+
+* Use el token obtenido en el paso anterior y úselo para el envio de mensajes.
+  * **Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...**
+
+```curl
+curl -X 'POST' \
+  'http://<IP>:8002/api/message/$process-message' \
+  -H 'accept: application/json' \
+  -H 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...' \
+  -H 'Content-Type: application/json' \
+  -d '{
+  "resourceType": "Bundle"
+  ...
+}'
+```
 
 Para ejemplos de los Bundle de eventos consultar la [Documentación](https://interoperabilidad.minsal.cl/fhir/ig/tei/0.2.1/index.html)
 

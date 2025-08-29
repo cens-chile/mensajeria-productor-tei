@@ -9,9 +9,10 @@ RUN ln -sf /dev/stdout /var/log/nginx/access.log \
 RUN mkdir -p /code
 RUN mkdir -p /code/pip_cache
 COPY requirements.txt start-server.sh /code/
-COPY . /code/
 WORKDIR /code
 RUN pip3 install -r requirements.txt
+COPY . /code/
+
 RUN chmod +x start-server.sh
 
 # start server

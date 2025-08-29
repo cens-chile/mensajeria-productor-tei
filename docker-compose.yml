@@ -57,8 +57,6 @@ services:
       TOKEN_USER: ${TOKEN_USER:?err}
       TOKEN_PASSWORD: ${TOKEN_PASSWORD:?err}
       MEMCACHED_SERVER: ${MEMCACHED_SERVER:?err}
-    volumes:
-      - .:/code:z
 ### Migrations
   mensajeria_productor_api_migrations:
     build:
@@ -98,7 +96,7 @@ services:
           args:
               SECRET_KEY: ${SECRET_KEY}
       image: mensajeria_productor_api:latest
-      command: ["bash", "-c", "CELERY_WORKER_NAME=worker ./start_celery_worker.sh -P prefork -Q celery -c 2"]
+      command: ["bash", "-c", "APP=mensajeria_tei CELERY_WORKER_NAME=worker ./start_celery_worker.sh -P prefork -Q celery -c 2"]
       restart: "always"
       networks:
           - mensajeria-net
@@ -106,7 +104,7 @@ services:
           - rabbitmq
           - memcached
       healthcheck:
-          test: ["CMD-SHELL", "-c", "CELERY_WORKER_NAME=worker ./ping_celery_worker.sh"]
+          test: ["CMD-SHELL", "-c", "APP=mensajeria_tei CELERY_WORKER_NAME=worker ./ping_celery_worker.sh"]
       environment:
         DEBUG: ${DEBUG}
         SECRET_KEY: ${SECRET_KEY:?err}

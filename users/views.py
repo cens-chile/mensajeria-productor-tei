@@ -1,9 +1,11 @@
+import logging
+
 from django.contrib.auth.models import User, Group
 from django.shortcuts import redirect
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, permissions, status, serializers
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 from rest_framework.serializers import Serializer
 from rest_framework_simplejwt.authentication import AUTH_HEADER_TYPES
@@ -16,15 +18,27 @@ from rest_framework_simplejwt.views import TokenViewBase
 from users.serializers import UserSerializer, GroupSerializer, CheckSerializer, LogoutSerializer, \
     LogoutRefreshSerializer
 
+logging.basicConfig(level=logging.INFO, format='[%(asctime)s] - %(message)s', datefmt='%d/%b/%Y %H:%M:%S')
+logger = logging.getLogger(__name__)
 
-# Create your views here.
+class IsAdminOrSender(permissions.BasePermission):
+    """
+    Sender permission
+    """
+
+    def has_permission(self, request, view):
+        return bool(request.user and
+                    (request.user.sender or
+                    request.user.is_staff))
+
+
 class UserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
 
 class GroupViewSet(viewsets.ModelViewSet):
@@ -33,7 +47,7 @@ class GroupViewSet(viewsets.ModelViewSet):
     """
     queryset = Group.objects.all().order_by('name')
     serializer_class = GroupSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAdminUser]
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -46,6 +60,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['first_name'] = user.first_name
         token['last_name'] = user.last_name
         token['email'] = user.email
+        token['is_staff'] = user.is_staff
+        token['sender'] = user.groups.filter(name="sender").exists()
         # ...
 
         return token

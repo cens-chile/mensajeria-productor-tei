@@ -11,4 +11,4 @@ CELERY_WORKER_NAME_WITH_UUID="${CELERY_WORKER_NAME}-${UUID}"
 
 echo "$CELERY_WORKER_NAME_WITH_UUID" > "/tmp/celery-worker-$CELERY_WORKER_NAME.tmp"
 
-celery -A mensajeria_tei worker -n $CELERY_WORKER_NAME_WITH_UUID --loglevel=INFO "$@"
+celery -A ${APP:-""} worker -n $CELERY_WORKER_NAME_WITH_UUID --loglevel=INFO "$@"

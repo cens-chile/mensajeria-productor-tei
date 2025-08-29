@@ -38,6 +38,7 @@ def send_bundle(self, bundle, _id):
         mensaje.intento = mensaje.intento + 1
         logger.error("message: %s", error)
         mensaje.mensaje_resultado_error = error
+        mensaje.mensaje_resultado = None
         if mensaje.intento > 6:
             mensaje.estado = 'error'
         else:
