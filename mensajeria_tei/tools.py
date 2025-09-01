@@ -1,9 +1,13 @@
-from enum import Enum
+from enum import Enum, EnumMeta
 
 from fhirclient.models.bundle import BundleEntry
 
 
-class ProfileList(Enum):
+class ProfileListMeta(EnumMeta):
+    def __contains__(cls, item):
+        return item in cls.__members__.values()
+
+class ProfileList(str, Enum, metaclass=ProfileListMeta):
     iniciar = "https://interoperabilidad.minsal.cl/fhir/ig/tei/StructureDefinition/BundleIniciarLE"
     referenciar = "https://interoperabilidad.minsal.cl/fhir/ig/tei/StructureDefinition/BundleReferenciarLE"
     revisar = "https://interoperabilidad.minsal.cl/fhir/ig/tei/StructureDefinition/BundleRevisarLE"

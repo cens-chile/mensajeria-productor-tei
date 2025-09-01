@@ -78,8 +78,14 @@ def process_message(request):
     bundle = request.data
     try:
         bundle_resource = Bundle(jsondict=bundle)
+        if 'meta' not in bundle_resource.as_json():
+            return Response({"details": "Bundle does not have a meta"}, status=status.HTTP_412_PRECONDITION_FAILED)
         meta = Meta(jsondict=bundle_resource.meta.as_json())
+        if 'profile' not in meta.as_json() or len(meta.profile) == 0:
+            return Response({"details": "Bundle.meta does not have a profile"}, status=status.HTTP_412_PRECONDITION_FAILED)
         profile = meta.profile[0]
+        if profile not in iter(ProfileList):
+            return Response({"details": "Bundle.meta[0].profile unknown"}, status=status.HTTP_412_PRECONDITION_FAILED)
         evento = ProfileList(profile).name
         if 'entry' not in bundle_resource.as_json() or len(bundle_resource.entry) == 0:
             return Response({"details": "Bundle.entry is empty"}, status=status.HTTP_412_PRECONDITION_FAILED)
