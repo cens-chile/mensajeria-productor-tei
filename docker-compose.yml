@@ -171,7 +171,14 @@ services:
       - mensajeria-net
     ports:
       - "11211:11211"
-
+  visor-tei:
+    build:
+      context: visor-tei/.
+    image: visor-tei:latest
+    ports:
+      - 3000:80
+    networks:
+      - mensajeria-net
 #  flower:
 #    image: mher/flower
 #    container_name: flower

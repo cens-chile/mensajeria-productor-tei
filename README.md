@@ -222,11 +222,22 @@ Inicialmente se necesita un servidor donde desplegar el componente de mensajerí
 | RABBITMQ_HOST             | Host del servidor broker de mensajes(modificar en caso de externalizar el servidor RabbitMQ)                    | rabbitmq                                             |
 | MEMCACHED_SERVER          | Host del servidor de memcached(modificar en caso de externalizar el servidor RabbitMQ)                          | memcached                                            |
     
-10. Puesta en marcha
+* Puesta en marcha(solo la API)
     ```bash
     docker compose up -d
-    ```  
+    ```
+* Puesta en marcha(API + Visor)
 
+  ```bash
+  git clone https://github.com/cens-chile/visor-tei
+  echo -e \
+  "{
+    \"api_url\": \"http://localhost:8002/\", 
+    \"defaultLimit\": 200,
+    \"defaultOffset\": 0
+  }" | tee visor-tei/src/config/config.json
+  docker compose up -d
+  ``` 
 ### Desarrollo
 
 * Iniciar los servicios
