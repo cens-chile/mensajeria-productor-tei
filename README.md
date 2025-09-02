@@ -238,6 +238,10 @@ Inicialmente se necesita un servidor donde desplegar el componente de mensajerí
   }" | tee visor-tei/src/config/config.json
   docker compose up -d
   ``` 
+
+* API: Esta quedará ejecutándose en http://localhost:8002/
+* Visor: Esta quedará ejecutándose en http://localhost:3000/
+
 ### Desarrollo
 
 * Iniciar los servicios
