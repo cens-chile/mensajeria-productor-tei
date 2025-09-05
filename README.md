@@ -232,9 +232,7 @@ Inicialmente se necesita un servidor donde desplegar el componente de mensajerí
   git clone https://github.com/cens-chile/visor-tei
   echo -e \
   "{
-    \"api_url\": \"http://localhost:8002/\", 
-    \"defaultLimit\": 200,
-    \"defaultOffset\": 0
+    \"api_url\": \"http://localhost:8002/\",
   }" | tee visor-tei/src/config/config.json
   docker compose up -d
   ``` 

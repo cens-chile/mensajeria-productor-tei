@@ -175,6 +175,8 @@ services:
     build:
       context: visor-tei/.
     image: visor-tei:latest
+    depends_on:
+      - mensajeria_productor_api
     ports:
       - 3000:80
     networks:
